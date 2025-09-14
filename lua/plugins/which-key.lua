@@ -149,34 +149,57 @@ return {
 
                 -- Copilot Chat
                 { "<leader>cc", group = "💬 Copilot Chat" },
-                { "<leader>ccq", function()
-                    local input = vim.fn.input("Quick Chat: ")
-                    if input ~= "" then
-                        require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-                    end
-                end, desc = "Quick chat" },
-                { "<leader>cch", function()
-                    local actions = require("CopilotChat.actions")
-                    require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-                end, desc = "Help actions" },
-                { "<leader>ccp", function()
-                    local actions = require("CopilotChat.actions")
-                    require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-                end, desc = "Prompt actions" },
-                { "<leader>cce", "<cmd>CopilotChatExplain<cr>", desc = "Explain code" },
-                { "<leader>cct", "<cmd>CopilotChatTests<cr>", desc = "Generate tests" },
-                { "<leader>ccr", "<cmd>CopilotChatReview<cr>", desc = "Review code" },
-                { "<leader>ccR", "<cmd>CopilotChatRefactor<cr>", desc = "Refactor code" },
-                { "<leader>ccn", "<cmd>CopilotChatRename<cr>", desc = "Rename" },
-                { "<leader>ccv", "<cmd>CopilotChatToggle<cr>", desc = "Toggle chat" },
-                { "<leader>cci", "<cmd>CopilotChatInline<cr>", desc = "Inline chat" },
+                {
+                    "<leader>ccq",
+                    function()
+                        local input = vim.fn.input("Quick Chat: ")
+                        if input ~= "" then
+                            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+                        end
+                    end,
+                    desc = "Quick chat",
+                },
+                {
+                    "<leader>cch",
+                    function()
+                        local actions = require("CopilotChat.actions")
+                        require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+                    end,
+                    desc = "Help actions",
+                },
+                {
+                    "<leader>ccp",
+                    function()
+                        local actions = require("CopilotChat.actions")
+                        require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+                    end,
+                    desc = "Prompt actions",
+                },
+                { "<leader>cce", "<cmd>CopilotChatExplain<cr>",       desc = "Explain code" },
+                { "<leader>cct", "<cmd>CopilotChatTests<cr>",         desc = "Generate tests" },
+                { "<leader>ccr", "<cmd>CopilotChatReview<cr>",        desc = "Review code" },
+                { "<leader>ccR", "<cmd>CopilotChatRefactor<cr>",      desc = "Refactor code" },
+                { "<leader>ccn", "<cmd>CopilotChatRename<cr>",        desc = "Rename" },
+                { "<leader>ccv", "<cmd>CopilotChatToggle<cr>",        desc = "Toggle chat" },
+                { "<leader>cci", "<cmd>CopilotChatInline<cr>",        desc = "Inline chat" },
                 { "<leader>ccf", "<cmd>CopilotChatFixDiagnostic<cr>", desc = "Fix diagnostic" },
-                { "<leader>ccl", "<cmd>CopilotChatReset<cr>", desc = "Clear buffer and chat history" },
-                { "<leader>ccs", function()
-                    require("CopilotChat").ask("Summarize the selected code", { selection = require("CopilotChat.select").buffer })
-                end, desc = "Summarize buffer" },
+                { "<leader>ccl", "<cmd>CopilotChatReset<cr>",         desc = "Clear buffer and chat history" },
+                {
+                    "<leader>ccs",
+                    function()
+                        require("CopilotChat").ask(
+                            "Summarize the selected code",
+                            { selection = require("CopilotChat.select").buffer }
+                        )
+                    end,
+                    desc = "Summarize buffer",
+                },
                 { "<leader>ccm", "<cmd>CopilotChatCommit<cr>", desc = "Generate commit message for all changes" },
-                { "<leader>ccM", "<cmd>CopilotChatCommitStaged<cr>", desc = "Generate commit message for staged changes" },
+                {
+                    "<leader>ccM",
+                    "<cmd>CopilotChatCommitStaged<cr>",
+                    desc = "Generate commit message for staged changes",
+                },
 
                 -- Terminal operations
                 { "<leader>t", group = "💻 Terminal" },
@@ -187,7 +210,11 @@ return {
 
                 -- Toggles
                 { "<leader>T", group = "🔄 Toggle" },
-                { "<leader>Tb", "<cmd>lua require('gitsigns').toggle_current_line_blame()<cr>", desc = "Toggle git blame" },
+                {
+                    "<leader>Tb",
+                    "<cmd>lua require('gitsigns').toggle_current_line_blame()<cr>",
+                    desc = "Toggle git blame",
+                },
                 { "<leader>Td", "<cmd>lua require('gitsigns').toggle_deleted()<cr>", desc = "Toggle deleted" },
                 { "<leader>Tn", "<cmd>set number!<cr>", desc = "Toggle line numbers" },
                 { "<leader>Tr", "<cmd>set relativenumber!<cr>", desc = "Toggle relative numbers" },
@@ -215,31 +242,72 @@ return {
                 { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "Find files" },
                 { "<C-n>", "<cmd>Neotree filesystem reveal float<cr>", desc = "Toggle file tree" },
 
+                -- Comment operations
+                { "<leader>/", group = "💬 Comment" },
+                {
+                    "<leader>//",
+                    "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
+                    desc = "Toggle line comment",
+                },
+                {
+                    "<leader>/*",
+                    "<cmd>lua require('Comment.api').toggle.blockwise.current()<CR>",
+                    desc = "Toggle block comment",
+                },
             },
+
             -- Visual mode specific
             {
                 mode = { "v" },
-                { "<leader>ghs", function()
-                    require('gitsigns').stage_hunk {vim.fn.line('.'), vim.fn.line('v')}
-                end, desc = "Stage hunk (visual)" },
-                { "<leader>ghr", function()
-                    require('gitsigns').reset_hunk {vim.fn.line('.'), vim.fn.line('v')}
-                end, desc = "Reset hunk (visual)" },
-                { "<leader>ccx", ":<C-u>CopilotChatInline<cr>", desc = "Inline chat" },
+                {
+                    "<leader>ghs",
+                    function()
+                        require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                    end,
+                    desc = "Stage hunk (visual)",
+                },
+                {
+                    "<leader>ghr",
+                    function()
+                        require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                    end,
+                    desc = "Reset hunk (visual)",
+                },
+                {
+                    "<leader>ccx",
+                    ":<C-u>CopilotChatInline<cr>",
+                    desc = "Inline chat",
+                },
+                {
+                    "<leader>//",
+                    "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+                    desc = "Toggle line comment (visual)",
+                },
+                {
+                    "<leader>/*",
+                    "<esc><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>",
+                    desc = "Toggle block comment (visual)",
+                },
             },
             -- Insert mode for Copilot
             {
                 mode = { "i" },
-                { "<C-J>", 'copilot#Accept("\\<CR>")', expr = true, replace_keycodes = false, desc = "Accept Copilot suggestion" },
+                {
+                    "<C-J>",
+                    'copilot#Accept("\\<CR>")',
+                    expr = true,
+                    replace_keycodes = false,
+                    desc = "Accept Copilot suggestion",
+                },
                 { "<C-L>", "<Plug>(copilot-accept-word)", desc = "Accept Copilot word" },
-                { "<C-H>", "<Plug>(copilot-previous)", desc = "Previous Copilot suggestion" },
-                { "<C-K>", "<Plug>(copilot-next)", desc = "Next Copilot suggestion" },
-                { "<C-]>", "<Plug>(copilot-dismiss)", desc = "Dismiss Copilot suggestion" },
+                { "<C-H>", "<Plug>(copilot-previous)",    desc = "Previous Copilot suggestion" },
+                { "<C-K>", "<Plug>(copilot-next)",        desc = "Next Copilot suggestion" },
+                { "<C-]>", "<Plug>(copilot-dismiss)",     desc = "Dismiss Copilot suggestion" },
             },
         },
 
         triggers = {
-            { "<auto>", mode = "nixsotc" },
+            { "<auto>",   mode = "nixsotc" },
             { "<leader>", mode = { "n", "v" } },
         },
 
