@@ -27,6 +27,21 @@ return {
 					"clang-format", -- C/C++ formatter
 					"xmllint", -- XML formatter
 					"cmake-language-server", -- CMake LSP (useful for ROS2/Zephyr)
+                    "actionlint",
+                    "checkmake",
+                    "clangd",
+                    "cmakelang",
+                    "cmakelint",
+                    "codespell",
+                    "copilot-language-server",
+                    "cpptools",
+                    "lemminx",
+                    "lua-language-server",
+                    "mypy",
+                    "pyright",
+                    "ruff",
+                    "rust-analyzer",
+                    "yapf"
 				},
 				automatic_installation = true,
 			})
