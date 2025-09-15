@@ -1,5 +1,21 @@
 This repository contains my Neovim setup, including plugins, LSP configuration, and custom settings. Plugins are managed with [lazy.nvim](https://github.com/folke/lazy.nvim), which will be auto-installed.
 
+## Features
+
+- **Catppuccin theme** for a beautiful, modern look.  
+- **Telescope** for fuzzy finding files, live grep, buffers, commands.  
+- **Neo-tree** for file explorer with floating and sidebar modes.  
+- **LSP integration** (via `nvim-lspconfig` + Mason) for multiple languages.  
+- **Treesitter** for better syntax highlighting and indentation.  
+- **Auto-completion** with `nvim-cmp` + snippets (`LuaSnip` + `friendly-snippets`).  
+- **Auto pairs & tags** (`nvim-autopairs`, `nvim-ts-autotag`) for closing brackets, quotes, and tags.  
+- **Git integration** with `gitsigns.nvim` + `vim-fugitive`.  
+- **Code formatting & linting** via `null-ls` (formatters + diagnostics).  
+- **GitHub Copilot** + Copilot Chat for AI pair programming.  
+- **Window & buffer management** with leader-key mappings.  
+- **Debugging** with `nvim-dap` + UI.  
+- **Which-key** for discoverable keymaps. 
+
 ## Prerequisites
 
 - Neovim (v0.9 or newer)
@@ -7,6 +23,7 @@ This repository contains my Neovim setup, including plugins, LSP configuration, 
 - Node
 - Pip3
 - Python3
+- ripgrep
 
 ## Installation
 
