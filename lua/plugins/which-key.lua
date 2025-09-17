@@ -105,7 +105,14 @@ return {
                 { "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<cr>", desc = "Diagnostics to loclist" },
                 { "<leader>lj", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next diagnostic" },
                 { "<leader>lk", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Prev diagnostic" },
-
+                
+                -- Code generation and snippets
+                { "<leader>n", group = "📝 Neogen/Snippets" },
+                { "<leader>nf", "<cmd>lua require('neogen').generate()<cr>", desc = "Generate function docs" },
+                { "<leader>nc", "<cmd>lua require('neogen').generate({ type = 'class' })<cr>", desc = "Generate class docs" },
+                { "<leader>nt", "<cmd>lua require('neogen').generate({ type = 'type' })<cr>", desc = "Generate type docs" },
+                { "<leader>nF", "<cmd>lua require('neogen').generate({ type = 'file' })<cr>", desc = "Generate file docs" },
+                
                 -- Git operations
                 { "<leader>g", group = "🌿 Git" },
                 { "<leader>gs", "<cmd>Git<cr>", desc = "Git status" },
@@ -279,6 +286,37 @@ return {
                 { "<C-H>", "<Plug>(copilot-previous)",    desc = "Previous Copilot suggestion" },
                 { "<C-K>", "<Plug>(copilot-next)",        desc = "Next Copilot suggestion" },
                 { "<C-]>", "<Plug>(copilot-dismiss)",     desc = "Dismiss Copilot suggestion" },
+            },
+
+            -- Insert and Select mode for LuaSnip navigation
+            {
+                mode = { "i", "s" },
+                {
+                    "<Tab>",
+                    function()
+                        local luasnip = require("luasnip")
+                        if luasnip.expand_or_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            return "<Tab>"
+                        end
+                    end,
+                    expr = true,
+                    desc = "Expand snippet or jump to next placeholder"
+                },
+                {
+                    "<S-Tab>",
+                    function()
+                        local luasnip = require("luasnip")
+                        if luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            return "<S-Tab>"
+                        end
+                    end,
+                    expr = true,
+                    desc = "Jump to previous snippet placeholder"
+                },
             },
         },
 
