@@ -130,7 +130,7 @@ return {
                 { "<leader>ghN", "<cmd>lua require('gitsigns').nav_hunk('prev')<cr>", desc = "Prev hunk" },
 
                 -- Debug operations
-                { "<leader>d", group = "🐛 Debug" },
+                { "<leader>d", group = "🛠 Debug" },
                 { "<leader>dt", "<cmd>DapToggleBreakpoint<cr>", desc = "Toggle breakpoint" },
                 { "<leader>dc", "<cmd>DapContinue<cr>", desc = "Continue" },
                 { "<leader>dx", "<cmd>DapTerminate<cr>", desc = "Terminate" },
@@ -141,65 +141,15 @@ return {
                 { "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", desc = "Toggle DAP UI" },
                 { "<leader>dh", "<cmd>lua require('dapui').eval()<cr>", desc = "Evaluate expression" },
 
-                -- Copilot operations
+                -- Copilot operations (SIMPLIFIED)
                 { "<leader>c", group = "🤖 Copilot" },
                 { "<leader>ct", "<cmd>Copilot toggle<cr>", desc = "Toggle Copilot" },
                 { "<leader>cp", "<cmd>Copilot panel<cr>", desc = "Copilot panel" },
-                { "<leader>cs", "<cmd>Copilot suggestion<cr>", desc = "Copilot suggestion" },
-
-                -- Copilot Chat
-                { "<leader>cc", group = "💬 Copilot Chat" },
-                {
-                    "<leader>ccq",
-                    function()
-                        local input = vim.fn.input("Quick Chat: ")
-                        if input ~= "" then
-                            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-                        end
-                    end,
-                    desc = "Quick chat",
-                },
-                {
-                    "<leader>cch",
-                    function()
-                        local actions = require("CopilotChat.actions")
-                        require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-                    end,
-                    desc = "Help actions",
-                },
-                {
-                    "<leader>ccp",
-                    function()
-                        local actions = require("CopilotChat.actions")
-                        require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-                    end,
-                    desc = "Prompt actions",
-                },
-                { "<leader>cce", "<cmd>CopilotChatExplain<cr>",       desc = "Explain code" },
-                { "<leader>cct", "<cmd>CopilotChatTests<cr>",         desc = "Generate tests" },
-                { "<leader>ccr", "<cmd>CopilotChatReview<cr>",        desc = "Review code" },
-                { "<leader>ccR", "<cmd>CopilotChatRefactor<cr>",      desc = "Refactor code" },
-                { "<leader>ccn", "<cmd>CopilotChatRename<cr>",        desc = "Rename" },
-                { "<leader>ccv", "<cmd>CopilotChatToggle<cr>",        desc = "Toggle chat" },
-                { "<leader>cci", "<cmd>CopilotChatInline<cr>",        desc = "Inline chat" },
-                { "<leader>ccf", "<cmd>CopilotChatFixDiagnostic<cr>", desc = "Fix diagnostic" },
-                { "<leader>ccl", "<cmd>CopilotChatReset<cr>",         desc = "Clear buffer and chat history" },
-                {
-                    "<leader>ccs",
-                    function()
-                        require("CopilotChat").ask(
-                            "Summarize the selected code",
-                            { selection = require("CopilotChat.select").buffer }
-                        )
-                    end,
-                    desc = "Summarize buffer",
-                },
-                { "<leader>ccm", "<cmd>CopilotChatCommit<cr>", desc = "Generate commit message for all changes" },
-                {
-                    "<leader>ccM",
-                    "<cmd>CopilotChatCommitStaged<cr>",
-                    desc = "Generate commit message for staged changes",
-                },
+                { "<leader>co", "<cmd>CopilotChat<cr>", desc = "Open Copilot Chat" },
+                { "<leader>cc", "<cmd>CopilotChatClose<cr>", desc = "Close Copilot Chat" },
+                { "<leader>cr", "<cmd>CopilotChatReset<cr>", desc = "Reset Copilot Chat" },
+                { "<leader>cl", "<cmd>CopilotChatLoad<cr>", desc = "Load Copilot Chat" },
+                { "<leader>cs", "<cmd>CopilotChatSave<cr>", desc = "Save Copilot Chat" },
 
                 -- Terminal operations
                 { "<leader>t", group = "💻 Terminal" },
@@ -221,7 +171,7 @@ return {
                 { "<leader>Tw", "<cmd>set wrap!<cr>", desc = "Toggle word wrap" },
 
                 -- Quit operations
-                { "<leader>q", group = "❌ Quit" },
+                { "<leader>q", group = "⌌ Quit" },
                 { "<leader>qq", "<cmd>qa<cr>", desc = "Quit all" },
                 { "<leader>qQ", "<cmd>qa!<cr>", desc = "Force quit all" },
                 { "<leader>qw", "<cmd>wqa<cr>", desc = "Save and quit all" },
@@ -242,16 +192,25 @@ return {
                 { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "Find files" },
                 { "<C-n>", "<cmd>Neotree filesystem reveal float<cr>", desc = "Toggle file tree" },
 
-                -- Comment operations
-                { "<leader>/", group = "💬 Comment" },
+                -- Comment operations (FIXED)
+                { "gc", group = "💬 Comment" },
                 {
-                    "<leader>//",
-                    "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
+                    "gcc",
+                    function()
+                        require('Comment.api').toggle.linewise.current()
+                    end,
                     desc = "Toggle line comment",
                 },
                 {
-                    "<leader>/*",
-                    "<cmd>lua require('Comment.api').toggle.blockwise.current()<CR>",
+                    "gbc",
+                    function()
+                        -- For Python and similar languages, use line comments even in "block" mode
+                        if vim.bo.filetype == 'python' then
+                            require('Comment.api').toggle.linewise.current()
+                        else
+                            require('Comment.api').toggle.blockwise.current()
+                        end
+                    end,
                     desc = "Toggle block comment",
                 },
             },
@@ -273,22 +232,39 @@ return {
                     end,
                     desc = "Reset hunk (visual)",
                 },
+                -- Comment operations in visual mode (FIXED)
                 {
-                    "<leader>ccx",
-                    ":<C-u>CopilotChatInline<cr>",
-                    desc = "Inline chat",
-                },
-                {
-                    "<leader>//",
-                    "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+                    "gc",
+                    function()
+                        local utils = require('Comment.utils')
+                        local api = require('Comment.api')
+                        
+                        -- For Python, always use linewise comments even in visual mode
+                        if vim.bo.filetype == 'python' then
+                            api.toggle.linewise(vim.fn.visualmode())
+                        else
+                            -- For other languages, use linewise in visual mode
+                            api.toggle.linewise(vim.fn.visualmode())
+                        end
+                    end,
                     desc = "Toggle line comment (visual)",
                 },
                 {
-                    "<leader>/*",
-                    "<esc><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>",
+                    "gb", 
+                    function()
+                        local api = require('Comment.api')
+                        
+                        -- For Python, iterate through each line and comment individually
+                        if vim.bo.filetype == 'python' then
+                            api.toggle.linewise(vim.fn.visualmode())
+                        else
+                            api.toggle.blockwise(vim.fn.visualmode())
+                        end
+                    end,
                     desc = "Toggle block comment (visual)",
                 },
             },
+            
             -- Insert mode for Copilot
             {
                 mode = { "i" },
