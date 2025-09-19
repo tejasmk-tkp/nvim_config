@@ -50,6 +50,56 @@ local function get_all_classes()
     return ""
 end
 
+-- Function to scan and get global variables
+local function get_global_variables()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local globals = {}
+    local in_function = false
+    local in_class = false
+    local indent_level = 0
+    
+    for _, line in ipairs(lines) do
+        -- Skip empty lines and comments
+        if line:match("^%s*$") or line:match("^%s*#") then
+            goto continue
+        end
+        
+        local current_indent = #(line:match("^%s*") or "")
+        
+        -- Track if we're inside a function or class
+        if line:match("^%s*def%s+") then
+            in_function = true
+            indent_level = current_indent
+        elseif line:match("^%s*class%s+") then
+            in_class = true
+            indent_level = current_indent
+        elseif current_indent <= indent_level and (in_function or in_class) then
+            in_function = false
+            in_class = false
+        end
+        
+        -- Look for global variable assignments (not inside functions/classes)
+        if not in_function and not in_class and current_indent == 0 then
+            -- Match various assignment patterns
+            local var_name = line:match("^([%w_]+)%s*=") or
+                           line:match("^([%w_]+)%s*:%s*[%w_%[%]]+%s*=") or
+                           line:match("^([%w_]+)%s*:%s*[%w_%[%]]+")
+            
+            if var_name and not var_name:match("^__") then -- Exclude dunder variables
+                table.insert(globals, var_name)
+            end
+        end
+        
+        ::continue::
+    end
+    
+    if #globals > 0 then
+        return table.concat(globals, ", ")
+    end
+    return "None"
+end
+
 -- Function to get function name from surrounding context
 local function get_function_name()
     local bufnr = vim.api.nvim_get_current_buf()
@@ -172,7 +222,7 @@ local function get_class_methods()
 end
 
 local snippets = {
-    -- eYRC file header comment
+    -- eYRC file header comment with auto-detected global variables
     s("snip-cs-eyrc-file", {
         t({ "'''", "# Team ID: " }),
         i(1, "Team-ID"),
@@ -187,12 +237,12 @@ local snippets = {
         t({ "", "# Classes: " }),
         f(get_all_classes, {}),
         t({ "", "# Global variables: " }),
-        i(4, "None"),
+        f(get_global_variables, {}),
         t({ "", "'''", "", "" }),
         i(0),
     }),
 
-    -- General file header comment
+    -- General file header comment with auto-detected global variables
     s("snip-cs-file", {
         t({ "'''", "# Author: " }),
         i(1, "Your Name"),
@@ -205,7 +255,7 @@ local snippets = {
         t({ "", "# Classes: " }),
         f(get_all_classes, {}),
         t({ "", "# Global variables: " }),
-        i(3, "None"),
+        f(get_global_variables, {}),
         t({ "", "'''", "", "" }),
         i(0),
     }),
