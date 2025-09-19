@@ -13,6 +13,10 @@ vim.opt.relativenumber = true
 -- Use system clipboard for yank/paste
 vim.opt.clipboard = "unnamedplus"
 
+-- Indent in visual mode with Tab / Shift-Tab
+vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent selection" })
+vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Unindent selection" })
+
 -- install package manager (lazy) if not available --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
