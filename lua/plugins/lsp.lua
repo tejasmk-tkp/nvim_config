@@ -12,12 +12,11 @@ return {
 		opts = {
             ensure_installed = {
                 "pyright",
-                "rust-analyzer",
-                "lua-language-server",
+                "rust_analyzer",
+                "lua_ls",
                 "clangd",
                 "cmake",
-                "lemminx",
-                "copilot-language-server"
+                "lemminx"
             },
 			automatic_installation = true,
 		},
