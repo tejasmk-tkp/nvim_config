@@ -43,7 +43,7 @@ return {
                     "rust-analyzer",
                     "yapf"
 				},
-				automatic_installation = true,
+				automatic_installation = false,
 			})
 		end,
 	},
