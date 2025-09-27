@@ -15,7 +15,6 @@ return {
                 "rust_analyzer",
                 "lua_ls",
                 "clangd",
-                "cmake",
                 "lemminx"
             },
 			automatic_installation = true,
@@ -32,7 +31,6 @@ return {
 			require("mason-null-ls").setup({
 				ensure_installed = {
 					"stylua", -- Lua formatter
-					"clang-format", -- C/C++ formatter
 					"xmllint", -- XML formatter
 					"cmake-language-server", -- CMake LSP (useful for ROS2/Zephyr)
                     "actionlint",
