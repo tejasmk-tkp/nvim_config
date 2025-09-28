@@ -18,12 +18,24 @@ This repository contains my Neovim setup, including plugins, LSP configuration, 
 
 ## Prerequisites
 
-- Neovim (v0.9 or newer)
-- Git
-- Node
-- Pip3
-- Python3
+- neovim
+- git
 - ripgrep
+- lynx
+- gh
+- nodejs
+- npm
+- python3-pip
+- xclip
+- xsel
+- python3-pynvim
+- clang
+- cmake
+- clang-format
+- ninja-build
+- codespell
+
+**Note:** Please install the latest versions of the deps, most often the one's found in apt are outdated and can cause a lot of issues.
 
 ## Installation
 
