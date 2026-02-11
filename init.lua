@@ -17,6 +17,10 @@ vim.opt.clipboard = "unnamedplus"
 vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent selection" })
 vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Unindent selection" })
 
+-- Persistent undo history -- 
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
+
 -- install package manager (lazy) if not available --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
