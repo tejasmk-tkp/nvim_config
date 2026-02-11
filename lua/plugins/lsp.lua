@@ -51,7 +51,6 @@ return {
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		config = function()
-			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			capabilities.offsetEncoding = { "utf-8" }
 
@@ -75,7 +74,6 @@ return {
 				local ament_path = vim.env.AMENT_PREFIX_PATH
 				if ament_path and ament_path ~= "" then
 					for prefix in ament_path:gmatch("[^:]+") do
-						-- Try common Python lib locations
 						local py_paths = {
 							prefix .. "/lib/python3.12/site-packages",
 							prefix .. "/lib/python3.11/site-packages",
@@ -105,12 +103,19 @@ return {
 				return unique
 			end
 
-			-- Setup each installed LSP with enhanced settings
-			lspconfig.lua_ls.setup({
+			-- New Neovim 0.11+ style LSP configuration
+			vim.lsp.config("lua_ls", {
 				capabilities = capabilities,
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+					},
+				},
 			})
 
-			lspconfig.pyright.setup({
+			vim.lsp.config("pyright", {
 				capabilities = capabilities,
 				settings = {
 					python = {
@@ -122,7 +127,7 @@ return {
 				},
 			})
 
-			lspconfig.clangd.setup({
+			vim.lsp.config("clangd", {
 				capabilities = capabilities,
 				cmd = {
 					"clangd",
@@ -132,26 +137,36 @@ return {
 					"--header-insertion=iwyu",
 					"--offset-encoding=utf-8",
 				},
-				root_dir = lspconfig.util.root_pattern(
+				root_markers = {
 					"compile_commands.json",
 					"CMakeLists.txt",
 					"package.xml",
 					"prj.conf",
-					".git"
-				),
+					".git",
+				},
 			})
 
-			lspconfig.rust_analyzer.setup({
+			vim.lsp.config("rust_analyzer", {
 				capabilities = capabilities,
 			})
 
-			lspconfig.lemminx.setup({
+			vim.lsp.config("lemminx", {
 				capabilities = capabilities,
 				filetypes = { "xml", "xsd", "xsl", "xslt", "svg", "launch" },
 			})
 
-			lspconfig.cmake.setup({
+			vim.lsp.config("cmake", {
 				capabilities = capabilities,
+			})
+
+			-- Enable the configured LSPs
+			vim.lsp.enable({
+				"lua_ls",
+				"pyright",
+				"clangd",
+				"rust_analyzer",
+				"lemminx",
+				"cmake",
 			})
 		end,
 	},
