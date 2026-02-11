@@ -4,7 +4,7 @@ return {
     config = function()
         require("csvview").setup({
             view = {
-                display_mode = "border", -- "border" or "highlight"
+                display_mode = "highlight", -- "border" or "highlight"
             },
         })
 
