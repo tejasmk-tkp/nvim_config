@@ -208,6 +208,44 @@ return {
 				{ "<leader>mr", "<cmd>lua vim.lsp.buf.reload()<cr>", desc = "Reload LSP" },
 				{ "<leader>ms", "<cmd>source %<cr>", desc = "Source file" },
 
+				-- Diagnostics (Trouble)
+				{ "<leader>x", group = "🔴 Diagnostics" },
+				{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "All diagnostics" },
+				{ "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics" },
+				{ "<leader>xq", "<cmd>Trouble quickfix toggle<cr>", desc = "Quickfix list" },
+				{ "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location list" },
+
+				-- Undo tree
+				{ "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "🕐 Undo tree" },
+
+				-- Session management
+				{ "<leader>S", group = "💾 Session" },
+				{
+					"<leader>Sr",
+					function()
+						require("persistence").load()
+					end,
+					desc = "Restore session",
+				},
+				{
+					"<leader>Sl",
+					function()
+						require("persistence").load({ last = true })
+					end,
+					desc = "Last session",
+				},
+				{
+					"<leader>Ss",
+					function()
+						require("persistence").stop()
+					end,
+					desc = "Don't save session",
+				},
+
+				-- TODO comments
+				{ "<leader>xt", "<cmd>TodoTelescope<cr>", desc = "Search TODOs" },
+				{ "<leader>xT", "<cmd>Trouble todo toggle<cr>", desc = "TODOs in Trouble" },
+
 				-- Quick access (no submenu)
 				{ "<leader><space>", "<cmd>Telescope find_files<cr>", desc = "Find files" },
 				{ "<leader>/", "<cmd>Telescope live_grep<cr>", desc = "Search text" },
